@@ -1,60 +1,43 @@
-import { PipeTransform, Pipe } from '@angular/core';
 
-/**
- * custom pipe that sorts the array according according to the column
- *  passed as argument , it takes care of the order too  
- */
-@Pipe({name:"orderBy"})
-export class OrderBy implements PipeTransform{
-    /**
-     * 
-     * @param arr array which needs to be sorted
-     * @param column column name which is used for sorting
-     * @param order order in which array has to be sorted
-     */
-    transform(arr:any[],column:string,order:boolean){
-       //
-       // column name is not defined ,no sorting is done
-       //
-        if(column==undefined){
-            return arr;
-        }
-
-         let result:any[]; 
-        if(order){
-          result =this.ascending(arr,column);
-          }else{
-            result =this.descending(arr,column);
-             }
-          return result;
-    }
-
-    /**
-     * 
-     * @param arr  array which needs to be sorted
-     * @param column column name which is used for sorting
-     */
-    ascending(arr:any[],column:string){
-        arr.sort((a:any,b:any)=>{
-            console.log(a[column]+""+b[column]+""+column);
-            if(a[column]>b[column]){
-                return 1;
-            }
-            return -1;});
-        return arr;}
-/**
-     * 
-     * @param arr  array which needs to be sorted
-     * @param column column name which is used for sorting
-       */
-    descending(arr:any[],column:string){
-        arr.sort((a:any,b:any)=>{
-            console.log(a[column]+""+b[column]+""+column);
-            if(a[column]>b[column]){
-                return -1;
-            }
-            return 1;
-        });
-        return arr;
-    }
-}
+<html>
+    <head>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+      <title>Validation Project</title>
+    </head>
+    <body>
+      <form name="MyForm" #details="ngForm" >
+          <div class="form-group" >
+              <h1>
+                Welcome to Validation Form!!
+              </h1>
+                    
+              <p>Name:<input required type="text" name="name" #Name="ngModel" ngmodel class="form-control" [(ngModel)]="val.name" ></p>
+             <div *ngIf='Name.errors && Name.touched' class="alert alert-danger">
+               <div [hidden]='!Name.errors.required'>
+                 Name is Required
+               </div>
+             </div>
+            </div>
+            
+              <p>Address:<input required type="text" name="address" #Address="ngModel" class="form-control"  [(ngModel)]="val.address" ></p>
+              <div *ngIf='Address.errors && Address.touched' class="alert alert-danger">
+                  <div [hidden]='!Address.errors.required'>
+                      Address is Required
+                    </div>
+              </div>
+  
+              <p>PinCode:<input required type="text" name="pincode" #Pin="ngModel" class="form-control"  [(ngModel)]="val.pincode"></p>
+              <div *ngIf='Pin.errors && Pin.touched' class="alert alert-danger">
+                  <div [hidden]='!Pin.errors.required'>
+                      PinCode is Required
+                    </div>
+              </div>
+              <input type="submit" value="Save" class="btn btn-info"><br>
+              You have entered:<p>"name":"{{val.name}}" </p><p>"address":"{{val.address}}"</p><p>"PinCode":"{{val.pincode}}"</p>
+      </form>
+      <p *ngIf="details.invalid">INVALID</p>
+      <p *ngIf="!details.invalid">VALID</p>
+    </body>
+  </html>
+  
+  
